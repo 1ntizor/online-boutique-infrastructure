@@ -17,6 +17,6 @@ jobs:
         run: |
           yamllint k8s-manifests/
 
-      - name: Kubernetes Dry Run
+      - name: Deploy to Cluster
         run: |
-          kubectl apply -f k8s-manifests/ --dry-run=client
+          kubectl apply -f k8s-manifests/
