@@ -18,3 +18,5 @@ jobs:
           kubectl get nodes
           kubectl get pods -n online-boutique
           echo "GitHub Actions успешно выполнил команду прямо на мастере!"
+          echo "Test"
+
