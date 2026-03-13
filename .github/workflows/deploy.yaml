@@ -13,10 +13,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Check Kubernetes Status
-        run: |
-          kubectl get nodes
-          kubectl get pods -n online-boutique
-          echo "GitHub Actions успешно выполнил команду прямо на мастере!"
-          echo "Test"
+      - name: YAML Lint
+        uses: iblancasa/check-yaml@v1
+        with:
+          files:  k8s-manifests/
 
