@@ -1,2 +1,14 @@
 actions-runner/
 nohup.out
+
+# Игнорируем служебную папку Terraform
+.terraform/
+.terraform.lock.hcl
+
+# Игнорируем файлы состояния (State)
+*.tfstate
+*.tfstate.backup
+
+# Игнорируем файлы с переменными и паролями
+*.tfvars
+*.tfvars.json
