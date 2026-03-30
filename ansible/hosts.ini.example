@@ -1,0 +1,7 @@
+[master]
+10.0.0.10 ansible_user=your_user
+
+[workers]
+10.0.0.11 ansible_user=your_user
+10.0.0.12 ansible_user=your_user
+10.0.0.13 ansible_user=your_user

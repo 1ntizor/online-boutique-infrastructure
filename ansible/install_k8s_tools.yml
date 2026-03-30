@@ -1,0 +1,50 @@
+---
+- name: Install Kubernetes components (Pro Way)
+  hosts: all
+  become: yes
+  tasks:
+    - name: Nuclear cleanup of kubernetes configs
+      file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - /etc/apt/sources.list.d/kubernetes.list
+        - /etc/apt/sources.list.d/kubernetes.list.bak
+        - /etc/apt/sources.list.d/pkgs_k8s_io_core_stable_v1_29_deb.list
+        - /etc/apt/keyrings/kubernetes-apt-keyring.asc
+        - /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+
+    - name: Create keyrings directory
+      file:
+        path: /etc/apt/keyrings
+        state: directory
+        mode: '0755'
+
+    - name: Upload Kubernetes GPG key from ops-box
+      copy:
+        src: ./kubernetes-apt-keyring.gpg
+        dest: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+        mode: '0644'
+
+    - name: Add Kubernetes repository
+      apt_repository:
+        repo: "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /"
+        state: present
+        update_cache: yes
+
+    - name: Install Kubernetes binaries
+      apt:
+        name:
+          - kubelet
+          - kubeadm
+          - kubectl
+        state: present
+
+    - name: Hold Kubernetes packages
+      dpkg_selections:
+        name: "{{ item }}"
+        selection: hold
+      loop:
+        - kubelet
+        - kubeadm
+        - kubectl

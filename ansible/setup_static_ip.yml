@@ -1,0 +1,17 @@
+---
+- name: Configure Static IP for K8s nodes
+  hosts: all
+  become: yes
+  tasks:
+    - name: Remove old Netplan configs
+      shell: rm -f /etc/netplan/*.yaml /etc/netplan/*.yml
+
+    - name: Deploy new Netplan configuration
+      template:
+        src: netplan.j2
+        dest: /etc/netplan/01-static-cfg.yaml
+
+    - name: Apply Netplan configuration
+      shell: netplan apply
+      async: 10
+      poll: 0
