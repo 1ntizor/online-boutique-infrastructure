@@ -4,4 +4,8 @@ kubectl get nodes
 
 echo ""
 echo "=== Probles Pods ==="
-kubectl get pods -A | grep -v "Running" | grep -v "Completed"
+if [ -z "$1" ]; then
+	kubectl get pods -A | grep -v "Running" | grep -v "Completed"
+else
+	kubectl get pods -n $1 | grep -v "Running" | grep -v "Completed"
+fi
