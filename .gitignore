@@ -12,3 +12,4 @@ nohup.out
 # Игнорируем файлы с переменными и паролями
 *.tfvars
 *.tfvars.json
+health_report.log
