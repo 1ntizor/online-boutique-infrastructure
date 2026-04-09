@@ -1,18 +1,23 @@
-import subprocess 
+from kubernetes import client, config
 
-print("=== Checking Cluster Nodes via Python ===")
+print("=== Kubernetes API Bot ===")
 
-# Tell Python to run 'kubectl get nodes' and capture the text output
-result = subprocess.run(["kubectl", "get", "pods", "-A"], capture_output=True, text=True)
+config.load_kube_config()
 
+v1 = client.CoreV1Api()
 
-# Print the captured result to the screen
-print("=== Successful Output ===")
+pods = v1.list_pod_for_all_namespaces(watch=False)
+
 print("=== Problem Pods ===")
-for line in result.stdout.splitlines():
-    if "Running" not in line:
-        print(line)
+problems_found = False
 
-print("=== Errors (if any) ===")
-print(result.stderr)
+for pod in pods.items:
+    if pod.status.phase not in ["Running" , "Succeeded"]:
+        problem_found = True
+        print(f"Namespace: {pod.metadata.namespace}")
+        print(f"Name:      {pod.metadata.name}")
+        print(f"Status:    {pod.status.phase}")
+        print("-" * 40)
 
+if not problem_found:
+    print("All pods are healthy!")
