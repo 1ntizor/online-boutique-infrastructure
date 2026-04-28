@@ -19,5 +19,5 @@ for pod in pods.items:
         print(f"Status:    {pod.status.phase}")
         print("-" * 40)
 
-if not problem_found:
+if not problems_found:
     print("All pods are healthy!")
