@@ -12,7 +12,7 @@ print("=== Problem Pods ===")
 problems_found = False
 
 for pod in pods.items:
-    if pod.status.phase not in ["Running" , "Succeeded"]:
+    if pod.status.phase not in ["Running", "Succeeded"]:
         problem_found = True
         print(f"Namespace: {pod.metadata.namespace}")
         print(f"Name:      {pod.metadata.name}")

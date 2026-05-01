@@ -1,4 +1,5 @@
-import json, os
+import json 
+import os
 
 # Define the path to the state file
 state_file = os.path.expanduser("~/esxi-infra/terraform.tfstate")
