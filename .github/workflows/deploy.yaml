@@ -5,8 +5,7 @@ on:
     branches: [ main ]
 
 jobs:
-  deploy:
-
+  build-and-deploy:
     runs-on: self-hosted
 
     steps:
@@ -15,8 +14,21 @@ jobs:
 
       - name: Run YAML Lint
         run: |
+          echo "Checking Kubernetes manifests..."
           yamllint k8s-manifests/
+
+      - name: Run Python Lint
+        run: |
+          echo "Checking Python scripts..."
+          pip install --quiet flake8
+          flake8 scripts/ --ignore=E501,E402,W503
+
+      - name: Kubernetes Dry Run
+        run: |
+          echo "Validating manifests for Kubernetes..."
+          kubectl apply -f k8s-manifests/ --dry-run=client
 
       - name: Deploy to Cluster
         run: |
+          echo "Applying changes to the cluster..."
           kubectl apply -f k8s-manifests/
