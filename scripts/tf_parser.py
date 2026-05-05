@@ -1,4 +1,4 @@
-import json 
+import json
 import os
 
 # Define the path to the state file
