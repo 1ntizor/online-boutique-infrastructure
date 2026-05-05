@@ -30,8 +30,9 @@ jobs:
             kubectl apply -f $file --dry-run=client
           done
 
-
       - name: Deploy to Cluster
         run: |
           echo "Applying changes to the cluster..."
-          kubectl apply -f k8s-manifests/
+          for file in $(ls k8s-manifests/*.yaml | grep -v kustomization); do
+            kubectl apply -f $file
+          done
