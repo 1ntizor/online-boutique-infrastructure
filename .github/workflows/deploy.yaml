@@ -22,13 +22,14 @@ jobs:
           echo "Checking Python scripts..."
           pip install --quiet flake8
           flake8 scripts/ --ignore=E501,E402,W503
-
+      
       - name: Kubernetes Dry Run
         run: |
-	  echo "Validating manifests for Kubernetes..."	
+          echo "Validating manifests for Kubernetes..."
           for file in $(ls k8s-manifests/*.yaml | grep -v kustomization); do
-	    kubectl apply -f $file --dry-run=client
+            kubectl apply -f $file --dry-run=client
           done
+
 
       - name: Deploy to Cluster
         run: |
