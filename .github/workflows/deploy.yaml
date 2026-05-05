@@ -25,8 +25,10 @@ jobs:
 
       - name: Kubernetes Dry Run
         run: |
-          echo "Validating manifests for Kubernetes..."
-          kubectl apply -f k8s-manifests/ --dry-run=client
+	  echo "Validating manifests for Kubernetes..."	
+          for file in $(ls k8s-manifests/*.yaml | grep -v kustomization); do
+	    kubectl apply -f $file --dry-run=client
+          done
 
       - name: Deploy to Cluster
         run: |
